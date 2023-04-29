@@ -46,7 +46,7 @@ Install Logging (Elasticsearch+Fluentd+Kibana):
 
 #### how to access Prometheus+Alert Manager+Grafana+Kibana
 
-1) Ensure you are using the given kubeconfig, context, etc (export KUBECONFIG=<file>, etc)
+1) Ensure you are using the given kubeconfig, context, etc (export KUBECONFIG=<file absolute path>, kubectl config view, etc)
 
 2) ./up.sh
 
