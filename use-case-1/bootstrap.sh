@@ -15,6 +15,8 @@ export NAME=${PROJECT}.k8s.local
 export NODE_COUNT=3
 export SAC=mygcpsac
 export REPO=my-repo
+export EMAIL="${SAC}@${PROJECT}.iam.gserviceaccount.com"
+
 
 # create gcp project and link billing
 gcloud projects create ${PROJECT} --set-as-default
@@ -37,10 +39,6 @@ gcloud artifacts repositories add-iam-policy-binding ${REPO} \
    --member=serviceAccount:${SAC}@${PROJECT}.iam.gserviceaccount.com \
    --role=roles/artifactregistry.admin
 
-gcloud projects add-iam-policy-binding ${PROJECT} \
-   --member=${SAC}@${PROJECT}.iam.gserviceaccount.com \
-   --role=roles/serviceAccountTokenCreator
-
 gcloud iam service-accounts keys create gcpsac.json \
     --iam-account=${SAC}@${PROJECT}.iam.gserviceaccount.com
 
@@ -61,10 +59,9 @@ gcloud compute networks delete default --project=${PROJECT} --quiet
 kops create cluster $NAME --zones "${ZONES}" --control-plane-zones "${ZONES}" --state ${KOPS_STATE_STORE}/ --project=${PROJECT} --node-count ${NODE_COUNT} --node-size n1-standard-4 --master-size n1-standard-2
 kops update cluster ${NAME} --yes --admin=87600h
 
-gcloud projects add-iam-policy-binding ${PROJECT} \
-   --member=node-${PROJECT}-k8s-local@${PROJECT}.iam.gserviceaccount.com \
-   --role=roles/artifactregistry.admin
+gcloud projects add-iam-policy-binding ${PROJECT} --member=serviceAccount:node-${PROJECT}-k8s-local@${PROJECT}.iam.gserviceaccount.com --role='roles/artifactregistry.admin'
 
+echo
+echo
+echo
 echo "*** FINISHED ***"
-echo "Create a secret KUBE_CONFIG in the github repo with the content of mykubeconfig file."
-echo "Create a secret SAC_KEY in the github repo with the content of gcpsac.json file (convert to one line first https://codebeautify.org/json-to-one-line?utm_content=cmp-true)."

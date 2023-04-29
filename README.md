@@ -71,7 +71,10 @@ On Kibana: create an index pattern logstash-*
 
 3) Stop all: pgrep kubectl | xargs kill -9
 
+#### CI/CD set-up for a simple test application
 
+1) Edit the app https://github.com/javimoya/newops/blob/main/source/server.js
+(update "Hello World" and push into master)
 
 #### how to clean-up everything
 

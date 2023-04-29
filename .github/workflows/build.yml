@@ -3,11 +3,7 @@ name: "> Build"
 concurrency: no-concurrency # no concurrency
 
 env:
-  TF_VERSION: "1.3.7"
-  PLAN_CACHE: "plan.cache"
-  PLAN_FILE: "plan.json"
   GAR_LOCATION: us-central1
-  PROJECT_ID: newops14
   REPOSITORY: my-repo
   IMAGE: sample
 
