@@ -44,22 +44,22 @@ jobs:
 
       # Build the Docker image
       - name: Build
-        env:
-          PROJECT_ID: ${{ env.PROJECT_ID }}
+        # env:
+        #   PROJECT_ID: ${{ env.PROJECT_ID }}
         run: |-
           cd source
           docker build \
-            --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA" \
+            --tag "$GAR_LOCATION-docker.pkg.dev/$GCP_PROJECT/$REPOSITORY/$IMAGE:$GITHUB_SHA" \
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
             --build-arg GITHUB_REF="$GITHUB_REF" \
             .
       # Push the Docker image to Google Artifact Registry
       - name: Publish
-        env:
-          PROJECT_ID: ${{ env.PROJECT_ID }}
+        # env:
+        #   PROJECT_ID: ${{ env.PROJECT_ID }}
         run: |-
           cd source
-          docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA"
+          docker push "$GAR_LOCATION-docker.pkg.dev/$GCP_PROJECT/$REPOSITORY/$IMAGE:$GITHUB_SHA"
 
       - name: Set Kubernetes Context
         uses: azure/k8s-set-context@v1
@@ -71,7 +71,7 @@ jobs:
         run: |
           cd source
           cat sample.yaml
-          sed -i'' -e 's/PROJECT_LABEL/${{ env.PROJECT_ID }}/g' sample.yaml
+          sed -i'' -e 's/PROJECT_LABEL/${{ env.GCP_PROJECT }}/g' sample.yaml
           sed -i'' -e 's/IMAGE_LABEL/${{ github.sha }}/g' sample.yaml
           cat sample.yaml
           kubectl apply -f sample.yaml
