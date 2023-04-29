@@ -6,6 +6,10 @@ env:
   TF_VERSION: "1.3.7"
   PLAN_CACHE: "plan.cache"
   PLAN_FILE: "plan.json"
+  GAR_LOCATION: us-central1
+  PROJECT_ID: newops14
+  REPOSITORY: myrepo
+  IMAGE: sample
 
 on:
   push:
@@ -40,6 +44,22 @@ jobs:
 
       - name: Setup gcloud
         uses: google-github-actions/setup-gcloud@v1.1.0
+
+      - name: Docker configuration
+        run: gcloud auth configure-docker $GAR_LOCATION-docker.pkg.dev
+
+      # Build the Docker image
+      - name: Build
+        run: |-
+          docker build \
+            --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA" \
+            --build-arg GITHUB_SHA="$GITHUB_SHA" \
+            --build-arg GITHUB_REF="$GITHUB_REF" \
+            .
+      # Push the Docker image to Google Artifact Registry
+      - name: Publish
+        run: |-
+          docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA"
 
       # - name: Clone repo
       #   uses: actions/checkout@main

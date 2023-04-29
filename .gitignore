@@ -1,2 +1,4 @@
 use-case-1/mykubeconfig
 node_modules
+gha-creds-*.json
+gcpsac.json
