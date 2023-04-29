@@ -13,10 +13,10 @@ on:
     branches:
       - main
     paths:
-      - "source/*/*.js"
+      - "source/*/*"
 
   # triggered directly from github
-  workflow_dispatch:
+  # workflow_dispatch:
 
 jobs:
   build:
