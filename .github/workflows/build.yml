@@ -51,6 +51,7 @@ jobs:
       # Build the Docker image
       - name: Build
         run: |-
+          cd source
           docker build \
             --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA" \
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
@@ -59,6 +60,7 @@ jobs:
       # Push the Docker image to Google Artifact Registry
       - name: Publish
         run: |-
+          cd source
           docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA"
 
       # - name: Clone repo
