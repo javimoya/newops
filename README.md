@@ -65,7 +65,7 @@ Create a demo pod with kubernetes.io/gce-pd (gce persistent disk)
     kubectl config view
     etc
 
-**Trigger everything**
+**Up everything locally**
 
     ./up.sh
 
