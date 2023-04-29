@@ -76,7 +76,7 @@ jobs:
           sed -i'' -e 's/PROJECT_LABEL/${{ env.PROJECT_ID }}/g' sample.yaml
           sed -i'' -e 's/IMAGE_LABEL/${{ github.sha }}/g' sample.yaml
           cat sample.yaml
-          kubectl apply -f sample.yml
+          kubectl apply -f sample.yaml
 
       # - name: kubectl apply
       #   run: |-
