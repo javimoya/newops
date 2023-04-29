@@ -44,6 +44,9 @@ Install Monitoring (Prometheus+Kube State Metrics+Alert Manager+Grafana+Node Exp
 Install Logging (Elasticsearch+Fluentd+Kibana):
 ./logging.sh $KIBANA_PASSWORD
 
+Create a demo pod with kubernetes.io/gce-pd (gce persistent disk)
+./storage-provisioner.sh
+
 #### how to access Prometheus+Alert Manager+Grafana+Kibana
 
 1) Ensure you are using the given kubeconfig, context, etc (export KUBECONFIG=<file absolute path>, kubectl config view, etc)
@@ -83,10 +86,29 @@ SAMPLE_POD=$(kubectl get pod --namespace=default -l app=sample -o jsonpath="{.it
 kubectl port-forward ${SAMPLE_POD} 8090:8090 -n default
 http://localhost:8090/
 
+#### storage provisioner
+
+kubectl get pods nginx -n default
+
+ssh into this pod
+kubectl exec -it nginx -n default -- bash
+
+create a file inside /var/lib/www/html
+touch /var/lib/www/html/a
+
+ssh into second pod
+kubectl exec -it nginx2 -n default -- bash
+ls /var/lib/www/html/
+
+File is there.
+You can also delete the pod and recreate it.
+
+
 #### how to clean-up everything
 
 (I guess you want to skip this section)
 
+./storage-provisioner-remove.sh
 ./logging-remove.sh
 ./monitoring-remove.sh
 ./unbootstrap.sh $PROJECT
