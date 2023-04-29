@@ -8,7 +8,7 @@ env:
   PLAN_FILE: "plan.json"
   GAR_LOCATION: us-central1
   PROJECT_ID: newops14
-  REPOSITORY: myrepo
+  REPOSITORY: my-repo
   IMAGE: sample
 
 on:
