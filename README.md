@@ -18,7 +18,7 @@ Make sure you have installed kOps, kubectl, and the gcloud tools if you want to 
 
 #### ⏩ how to bootstrap gcp+cluster+monitoring+logging+storage provisioner
 
-**(⚠️ I understand you can skip this section, this is only to bootstrap everything from scratch, fully scripted)**
+**(⚠️ I understand you can skip this section, this is only to bootstrap everything from scratch, fully scripted. All of this it's already provisioned if you connect to the kubeconfig file i shared with you by email)**
 
 Set the GCP Project Name to be created (e.g. newops99 -must be unique, non existing-):
 
