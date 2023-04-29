@@ -46,7 +46,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v1.1.0
 
       - name: Docker configuration
-        run: gcloud auth configure-docker $GAR_LOCATION-docker.pkg.dev
+        run: gcloud auth configure-docker $GAR_LOCATION-docker.pkg.dev --quiet
 
       # Build the Docker image
       - name: Build
@@ -62,6 +62,26 @@ jobs:
         run: |-
           cd source
           docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA"
+
+      - name: Set Kubernetes Context
+        uses: azure/k8s-set-context@v1
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBE_CONFIG }} # Use secret (https://developer.github.com/actions/managing-workflows/storing-secrets/)
+
+      - name: Deploy to Cluster
+        run: |
+          cd source
+          cat sample.yaml
+          sed -i'' -e 's/PROJECT_LABEL/${{ env.PROJECT_ID }}/g' sample.yaml
+          sed -i'' -e 's/IMAGE_LABEL/${{ github.sha }}/g' sample.yaml
+          cat sample.yaml
+          kubectl apply -f sample.yml
+
+      # - name: kubectl apply
+      #   run: |-
+      #     kubectl set image deployment/sample sample=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA
+      #     kubectl create deployment tmp --image=us-central1-docker.pkg.dev/newops14/my-repo/sample@sha256:2e4fcf2fd657ea59ec133034ddacad784c34abe450b2b0a4e709589406524dd3 --port=8090
 
       # - name: Clone repo
       #   uses: actions/checkout@main

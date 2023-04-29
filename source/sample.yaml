@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sample
+  namespace: default
+  labels:
+    app: sample
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample
+  template:
+    metadata:
+      labels:
+        app: sample
+    spec:
+      containers:
+        - name: sample
+          image: us-central1-docker.pkg.dev/PROJECT_LABEL/my-repo/sample@sha256:IMAGE_LABEL
+          ports:
+            - containerPort: 8090
