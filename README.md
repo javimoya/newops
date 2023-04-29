@@ -206,7 +206,7 @@ And some other configurations to enhance security:
    clusters using the Compute Engine default service account.
    
  - Restrict traffic among Pods: Istio, k8s network policies, etc
- - 
+ 
  - Consider encrypting Kubernetes Secrets using keys managed in Cloud
    KMS. You can use Kubernetes secrets natively in GKE.
 
