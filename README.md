@@ -16,7 +16,7 @@ Make sure you have installed kOps, kubectl, and the gcloud tools if you want to 
 
     cd use-case-1  
 
-#### ⏩ how to bootstrap gcp+cluster+monitoring+logging f
+#### ⏩ how to bootstrap gcp+cluster+monitoring+logging+storage provisioner
 
 **(⚠️ I understand you can skip this section, this is only to bootstrap everything from scratch, fully scripted)**
 
