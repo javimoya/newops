@@ -44,18 +44,22 @@ jobs:
 
       # Build the Docker image
       - name: Build
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID }}
         run: |-
           cd source
           docker build \
-            --tag "$GAR_LOCATION-docker.pkg.dev/${{ env.PROJECT_ID }}/$REPOSITORY/$IMAGE:$GITHUB_SHA" \
+            --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA" \
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
             --build-arg GITHUB_REF="$GITHUB_REF" \
             .
       # Push the Docker image to Google Artifact Registry
       - name: Publish
+        env:
+          PROJECT_ID: ${{ env.PROJECT_ID }}
         run: |-
           cd source
-          docker push "$GAR_LOCATION-docker.pkg.dev/${{ env.PROJECT_ID }}/$REPOSITORY/$IMAGE:$GITHUB_SHA"
+          docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA"
 
       - name: Set Kubernetes Context
         uses: azure/k8s-set-context@v1
