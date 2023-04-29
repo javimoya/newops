@@ -19,10 +19,13 @@ gcloud projects create ${PROJECT} --set-as-default
 gcloud beta billing projects link ${PROJECT} --billing-account ${BILLING_ACCOUNT}
 
 # enable needed services
-gcloud services enable compute.googleapis.com dns.googleapis.com
+gcloud services enable compute.googleapis.com dns.googleapis.com artifactregistry.googleapis.com
 
 # create state bucket
 gsutil mb -p ${PROJECT} -c standard -l ${REGION} ${KOPS_STATE_STORE}
+
+# create artifact registry
+gcloud artifacts repositories create my-repo --project=${PROJECT} --repository-format=docker --location=${REGION} --quiet
 
 # delete default vpc
 
