@@ -155,7 +155,7 @@ Unfortunately, I haven't had enough time to make much progress on this use case.
 
 ### Platform Architecture Design
 
-#### Run Platform: Google Kubernetes Engine (GKE)
+#### ⏩ Run Platform: Google Kubernetes Engine (GKE)
 
 Some configurations to achieve high availability and to ensure that your workloads operate properly at times of peak load:
 
@@ -211,11 +211,11 @@ And some other configurations to enhance security:
    KMS. You can use Kubernetes secrets natively in GKE.
 
   
-#### Storage
+#### ⏩ Storage
 
 Cloud Storage could be used maybe to store patent documents and other files. Cloud Storage is a highly scalable and durable object storage solution. Can be used also for backup and data archiving.
 
-#### Data
+#### ⏩ Data
 
 There are multiple options available, and to choose one or another we would need to take assumptions. Just to mention 2:
 
@@ -232,7 +232,7 @@ There are multiple options available, and to choose one or another we would need
    data.
 
   
-#### Analyzing
+#### ⏩ Analyzing
 
 BigQuery is a powerful tool for analyzing large datasets (e.g. patent data) quickly and easily.
 
@@ -244,7 +244,7 @@ BigQuery can be too a data source for machine learning models (e.g. train a mode
 
 Also could be integrated with Google Cloud Pub/Sub to stream data into BigQuery in real-time, enabling us to analyze and act on the data as it's generated.
 
-#### AI
+#### ⏩ AI
 
 Cloud Natural Language API: we could extract insights from patent documents by performing entity recognition, sentiment analysis, and content classification. This could be useful for organizing and categorizing patent documents, and for identifying relevant keywords and phrases.
 
@@ -252,7 +252,7 @@ Cloud Vision API: could be useful for extracting data from figures and diagrams.
 
 AutoML / Cloud AI Platform: develop models that can identify patterns in patent data or predict future patent trends, identify potential patent infringements... etc
 
-#### Performance & Security
+#### ⏩ Performance & Security
 
 Google Cloud CDN can automatically cache and serve the assets from the edge locations closest to the users, reducing the latency of the requests.
 
@@ -264,7 +264,7 @@ We can use Google Cloud Key Management Service (KMS) to encrypt and manage the e
 
 We could use Google Cloud Audit Logs to monitor and track the activity (unauthorized access or activity)
 
-#### Monitoring & Observability
+#### ⏩ Monitoring & Observability
 
 I guess the organization already have Monitoring & Observability stacks in place (Prometheus, Grafana, fluentd, Kibana, etc) but in case pure GCP solutions would be needed:
 
@@ -278,7 +278,7 @@ Alerting: We can set up alerts to notify us of any issues in the system. This ca
 
 Distributed tracing: We can use OpenTelemetry to instrument the application and collect distributed traces from the system. This can help us understand the end-to-end flow of requests.
 
-#### Disaster Recovery: infra, app & data recovery
+#### ⏩ Disaster Recovery: infra, app & data recovery
 
 GCP offers different built-in tools in case of DR scenario.
 
@@ -289,11 +289,11 @@ The infrastructure could be recovered from source code if we follow a gitops mod
 
 For data backup/recovery there are several options available (scheduled backups/snapshots, point in time recovery, etc)
 
-#### Load Testing 
+#### ⏩ Load Testing 
 
 Testing tools like Apache JMeter could simulate high traffic on your platform and identify performance bottlenecks.
  
-### Application Architecture Design
+### ⏩ Application Architecture Design
 
 I understand that this it's more likely to be out of scope for a devops position, but, for sure, the architecture of the application would greatly condition the Platform Architecture.
 
