@@ -17,6 +17,6 @@ spec:
     spec:
       containers:
         - name: sample
-          image: us-central1-docker.pkg.dev/PROJECT_LABEL/my-repo/sample@sha256:IMAGE_LABEL
+          image: us-central1-docker.pkg.dev/PROJECT_LABEL/my-repo/sample:IMAGE_LABEL
           ports:
             - containerPort: 8090
