@@ -147,3 +147,158 @@ You can also delete the pod and recreate it to validate persistence, and you can
     ./unbootstrap.sh $PROJECT
 
 Take into account that the GCP Project is not deleted.
+
+## 👈 use case 2
+
+Unfortunately, I haven't had enough time to make much progress on this use case. I'm only able to share this general overview of different components that could be part of such a platform.
+  
+
+### Platform Architecture Design
+
+#### Run Platform: Google Kubernetes Engine (GKE)
+
+Some configurations to achieve high availability and to ensure that your workloads operate properly at times of peak load:
+
+ - Regional cluster (3 control planes) with worker nodes deployed in
+   three different availability zones to achieve high availability.
+   
+ - Enable Cluster Autoscaler to automatically resize your nodepool size 
+   based on demand.
+  
+ - Use Horizontal Pod Autoscaling to automatically increase or decrease 
+   the number of pods based on utilization metrics.
+
+ - Use Vertical Pod Autoscaling (VPA) in conjunction with Node Auto   
+   Provisioning to allow GKE to efficiently scale your cluster both   
+   horizontally (pods) and vertically (nodes).
+
+ - If cost is not important you may want to create a large cluster and  
+   use GCP reservations to guarantee any anticipated burst in resources 
+   demand.
+
+ - Make sure you set up readiness & liveness probes (and that you test  
+   and validate any probes that you create).   
+
+ - To avoid a single point of failure/less latency, use Pod
+   anti-affinity/Pod affinity.
+
+And some other configurations to enhance security:
+
+ - In GKE the control planes are patched and upgraded for you
+   automatically. Node auto-upgrade also automatically upgrades nodes in
+   your cluster.
+   
+ - You should limit exposure of your cluster control plane and nodes to
+   the internet with Public endpoint access disabled.
+   
+ - Consider managing Kubernetes RBAC users with Google Groups for RBAC.
+ 
+ - Enable Shielded GKE Nodes.
+  
+ - Choose a hardened node image: The cos_containerd image is the
+   preferred image for GKE because it has been custom built, optimized,
+   and hardened specifically for running containers.
+   
+ - Enable Workload Identity, is the recommended way to authenticate to
+   Google APIs.
+   
+ - Use least privilege Google service accounts. Prefer not running GKE
+   clusters using the Compute Engine default service account.
+   
+ - Restrict traffic among Pods: Istio, k8s network policies, etc
+ - 
+ - Consider encrypting Kubernetes Secrets using keys managed in Cloud
+   KMS. You can use Kubernetes secrets natively in GKE.
+
+  
+#### Storage
+
+Cloud Storage could be used maybe to store patent documents and other files. Cloud Storage is a highly scalable and durable object storage solution. Can be used also for backup and data archiving.
+
+#### Data
+
+There are multiple options available, and to choose one or another we would need to take assumptions. Just to mention 2:
+
+ - Cloud SQL: it's a fully managed relational database service
+   that supports MySQL and PostgreSQL. It's best suited for structured
+   data that requires ACID compliance. Cloud SQL is easy to set up,
+   highly available, and can scale up or down as needed.
+   
+ - Cloud Spanner: it's a horizontally scalable, globally distributed
+   relational database that provides high availability and strong
+   consistency across multiple regions. It's best suited for
+   mission-critical workloads that require high scalability and low
+   latency. Cloud Spanner can handle both structured and semi-structured
+   data.
+
+  
+#### Analyzing
+
+BigQuery is a powerful tool for analyzing large datasets (e.g. patent data) quickly and easily.
+
+With it powerful querying capabilities could help to extract insights from the data.
+
+Could be integrate with Google Data Studio for visualization (patent trends, track patent application status, or monitor patent infringement activity).
+
+BigQuery can be too a data source for machine learning models (e.g. train a model to predict future patent trends or to identify potential patent infringements)
+
+Also could be integrated with Google Cloud Pub/Sub to stream data into BigQuery in real-time, enabling us to analyze and act on the data as it's generated.
+
+#### AI
+
+Cloud Natural Language API: we could extract insights from patent documents by performing entity recognition, sentiment analysis, and content classification. This could be useful for organizing and categorizing patent documents, and for identifying relevant keywords and phrases.
+
+Cloud Vision API: could be useful for extracting data from figures and diagrams.
+
+AutoML / Cloud AI Platform: develop models that can identify patterns in patent data or predict future patent trends, identify potential patent infringements... etc
+
+#### Performance & Security
+
+Google Cloud CDN can automatically cache and serve the assets from the edge locations closest to the users, reducing the latency of the requests.
+
+Google Cloud Armor could be used to protect the platform from DDoS attacks and other malicious traffic.
+
+Security Command Center could provide a centralized dashboard that would allow us to view the security posture of the cloud resources and identify any security issues that may arise.
+
+We can use Google Cloud Key Management Service (KMS) to encrypt and manage the encryption keys in different GCP cloud components.
+
+We could use Google Cloud Audit Logs to monitor and track the activity (unauthorized access or activity)
+
+#### Monitoring & Observability
+
+I guess the organization already have Monitoring & Observability stacks in place (Prometheus, Grafana, fluentd, Kibana, etc) but in case pure GCP solutions would be needed:
+
+GCP Cloud Operations Suite includes several tools for:
+
+Logging and tracing tools to collect and analyze logs and traces from the application. This can help us identify errors and performance bottlenecks in the system
+
+Metrics and monitoring: To collect and analyze metrics from the application. This can help us monitor the performance and health of the system and identify any issues that may arise.
+
+Alerting: We can set up alerts to notify us of any issues in the system. This can help us proactively identify and resolve issues before they impact the users.
+
+Distributed tracing: We can use OpenTelemetry to instrument the application and collect distributed traces from the system. This can help us understand the end-to-end flow of requests.
+
+#### Disaster Recovery: infra, app & data recovery
+
+GCP offers different built-in tools in case of DR scenario.
+
+Backup for GKE it's a service for backing up and restoring workloads in GKE cluster.
+Backup and DR Service for centralized, application-consistent data protection.
+
+The infrastructure could be recovered from source code if we follow a gitops model (Terraform, etc).
+
+For data backup/recovery there are several options available (scheduled backups/snapshots, point in time recovery, etc)
+
+#### Load Testing 
+
+Testing tools like Apache JMeter could simulate high traffic on your platform and identify performance bottlenecks.
+ 
+### Application Architecture Design
+
+I understand that this it's more likely to be out of scope for a devops position, but, for sure, the architecture of the application would greatly condition the Platform Architecture.
+
+For example, an event-driven architecture  would be much more conditional on the use of certain components (like Kafka and other async services) than for example a rest-api architecture.
+
+
+
+  
