@@ -47,7 +47,7 @@ jobs:
         run: |-
           cd source
           docker build \
-            --tag "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA" \
+            --tag "$GAR_LOCATION-docker.pkg.dev/${{ env.PROJECT_ID }}/$REPOSITORY/$IMAGE:$GITHUB_SHA" \
             --build-arg GITHUB_SHA="$GITHUB_SHA" \
             --build-arg GITHUB_REF="$GITHUB_REF" \
             .
@@ -55,7 +55,7 @@ jobs:
       - name: Publish
         run: |-
           cd source
-          docker push "$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA"
+          docker push "$GAR_LOCATION-docker.pkg.dev/${{ env.PROJECT_ID }}/$REPOSITORY/$IMAGE:$GITHUB_SHA"
 
       - name: Set Kubernetes Context
         uses: azure/k8s-set-context@v1

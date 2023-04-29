@@ -76,6 +76,11 @@ On Kibana: create an index pattern logstash-*
 1) Edit the app https://github.com/javimoya/newops/blob/main/source/server.js
 (update "Hello World" and push into master)
 
+2) A pipeline will run automatically
+
+3) Once finished
+KIBANA_POD=$(kubectl get pod --namespace=default -l app=sample -o jsonpath="{.items[0].metadata.name}")
+
 #### how to clean-up everything
 
 (I guess you want to skip this section)
